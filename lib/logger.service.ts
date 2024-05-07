@@ -22,7 +22,7 @@ export class LoggerService extends Logger implements ILogger {
 
     public init(app: NestApplication) {
         app.use((req, res, next) => {
-            console.log(trace.getActiveSpan()?.spanContext());
+            console.log(trace.getActiveSpan()?.spanContext(), '___');
             this.useContext(
                 {
                     traceId: trace.getActiveSpan()?.spanContext()?.traceId,
