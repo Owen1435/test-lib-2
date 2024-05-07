@@ -26,14 +26,17 @@ export interface LogContext {
 }
 
 export interface LogDescriptor {
-    traceId?: string;
-    spanId?: string;
-    traceFlags?: string;
     message: {
         msg: string;
     };
     optionalParams: Record<any, any>;
     context: string;
+    /** Trace id, set automatically by @opentelemetry/instrumentation-pino */
+    traceId?: string;
+    /** Span id, set automatically by @opentelemetry/instrumentation-pino */
+    spanId?: string;
+    /** Trace flag (00: NONE, 01: SAMPLED), set automatically by @opentelemetry/instrumentation-pino */
+    traceFlags?: string;
 }
 
 export type PinoLogLevel = 10 | 20 | 30 | 40 | 50 | 60;
