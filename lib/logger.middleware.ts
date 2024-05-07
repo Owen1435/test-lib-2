@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { InjectLogger } from './inject-logger.decorator';
 import { LoggerService } from './logger.service';
-import { healthCheckMethod, TRACE_ID_HEADER_NAME } from './constants';
+import { healthCheckMethod } from './constants';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
@@ -13,10 +13,6 @@ export class LoggerMiddleware implements NestMiddleware {
 
         const url = req.baseUrl;
         const method = req.method;
-        const traceId = this.logger.getTraceId();
-        if (traceId) {
-            res.setHeader(TRACE_ID_HEADER_NAME, traceId);
-        }
 
         if (healthCheckMethod === url) {
             return next();

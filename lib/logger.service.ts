@@ -2,10 +2,9 @@ import { AsyncLocalStorage } from 'async_hooks';
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { NestApplication } from '@nestjs/core';
 import { Logger, PinoLogger } from 'nestjs-pino';
-import { v4 as uuid } from 'uuid';
-import { ASYNC_STORAGE, LOGGER_MODULE_OPTIONS, TRACE_ID_HEADER_NAME } from './constants';
-import { ILogger, LogContext, LogDescriptor, LoggerModuleOptions } from './interfaces';
 import { trace } from '@opentelemetry/api';
+import { ASYNC_STORAGE, LOGGER_MODULE_OPTIONS } from './constants';
+import { ILogger, LogContext, LogDescriptor, LoggerModuleOptions } from './interfaces';
 
 @Injectable({
     scope: Scope.TRANSIENT,
@@ -23,9 +22,10 @@ export class LoggerService extends Logger implements ILogger {
 
     public init(app: NestApplication) {
         app.use((req, res, next) => {
+            console.log(trace.getActiveSpan()?.spanContext());
             this.useContext(
                 {
-                    traceId: req.headers[TRACE_ID_HEADER_NAME],
+                    traceId: trace.getActiveSpan()?.spanContext()?.traceId,
                 },
                 next,
             );
@@ -60,11 +60,7 @@ export class LoggerService extends Logger implements ILogger {
     public useContext<R>(context: LogContext, callback: (...args: any) => R) {
         const oldContext = this.asyncStorage.getStore();
         console.log('useContext', oldContext, context);
-        console.log(trace.getActiveSpan()?.spanContext());
-        const ctx: LogContext = oldContext ?? {
-            ...context,
-            traceId: context.traceId ?? uuid(),
-        };
+        const ctx: LogContext = oldContext ?? context;
         return this.asyncStorage.run(ctx, callback);
     }
 
