@@ -74,6 +74,7 @@ export interface LogEntry {
     data: {
         context: string;
         trace_id: string; // internal trace_id
+        span_id: string; // internal span_id
     };
     app_name: string;
     app_version: string;

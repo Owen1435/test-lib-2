@@ -32,7 +32,8 @@ async function factory(options: CdpTransportOptions) {
                         message: chunk.message.msg,
                         data: {
                             context: chunk.context,
-                            trace_id: chunk.message.traceId,
+                            trace_id: chunk.traceId,
+                            span_id: chunk.spanId,
                         },
                         app_name: options.applicationName,
                         app_version: options.applicationVersion,
