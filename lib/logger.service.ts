@@ -22,6 +22,7 @@ export class LoggerService extends Logger implements ILogger {
 
     public init(app: NestApplication) {
         app.use((req, res, next) => {
+            console.log('init', trace.getActiveSpan()?.spanContext());
             this.useContext(
                 {
                     traceId: trace.getActiveSpan()?.spanContext()?.traceId,
@@ -58,6 +59,7 @@ export class LoggerService extends Logger implements ILogger {
 
     public useContext<R>(context: LogContext, callback: (...args: any) => R) {
         const oldContext = this.asyncStorage.getStore();
+        console.log('useContext', context, context);
         const ctx: LogContext = oldContext ?? context;
         return this.asyncStorage.run(ctx, callback);
     }

@@ -26,9 +26,11 @@ export interface LogContext {
 }
 
 export interface LogDescriptor {
+    traceId?: string;
+    spanId?: string;
+    traceFlags?: string;
     message: {
         msg: string;
-        traceId?: string;
     };
     optionalParams: Record<any, any>;
     context: string;

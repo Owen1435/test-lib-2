@@ -4,7 +4,7 @@ import { PinoLogDescriptor } from './interfaces';
 
 function format(log: PinoLogDescriptor): string {
     const message = typeof log.message.msg === 'object' ? JSON.stringify(log.message.msg) : log.message.msg;
-    return `${log.message.traceId ? yellow(log.message.traceId) : ''} ${bold(log.context)} ${message}`;
+    return `${log.traceId ? yellow(log.traceId) : ''} ${bold(log.context)} ${message}`;
 }
 
 module.exports = opts =>
