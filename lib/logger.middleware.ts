@@ -9,8 +9,6 @@ export class LoggerMiddleware implements NestMiddleware {
     constructor(@InjectLogger('HTTP') private readonly logger: LoggerService) {}
 
     use(req: Request, res: Response, next: NextFunction): any {
-        console.log('LoggerMiddleware', this.logger.getTraceId());
-
         const url = req.baseUrl;
         const method = req.method;
 
