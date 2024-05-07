@@ -90,8 +90,6 @@ export interface ILogger {
     warn(msg: any, ...params: any[]): void;
     error(msg: any, ...params: any[]): void;
     setContext(context: string): void;
-    useContext<R>(context: LogContext, callback: (...args: any) => R);
-    getTraceId(): string | undefined;
 }
 
 export interface CdpTransportOptions {

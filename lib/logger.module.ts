@@ -1,10 +1,9 @@
-import { AsyncLocalStorage } from 'async_hooks';
 import { DynamicModule, Global, MiddlewareConsumer, Module, Provider, Scope } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PARAMS_PROVIDER_TOKEN, PinoLogger } from 'nestjs-pino';
 import { LoggerModuleAsyncOptions, LoggerModuleOptionsFactory } from './interfaces';
 import { LoggerService } from './logger.service';
-import { ASYNC_STORAGE, LOGGER_MODULE_OPTIONS } from './constants';
+import { LOGGER_MODULE_OPTIONS } from './constants';
 import { createProvidersForDecorated } from './inject-logger.decorator';
 import { LoggerDefaultOptionsFactory } from './logger.default-options.factory';
 import { LoggerMiddleware } from './logger.middleware';
@@ -57,21 +56,9 @@ export class LoggerModule {
                 pinoOptionsProvider,
                 ...decorated,
                 LoggerService,
-                {
-                    provide: ASYNC_STORAGE,
-                    useClass: AsyncLocalStorage,
-                },
                 pinoLoggerProvider,
             ],
-            exports: [
-                LoggerDefaultOptionsFactory,
-                optionsProvider,
-                pinoOptionsProvider,
-                LoggerService,
-                ...decorated,
-                pinoLoggerProvider,
-                ASYNC_STORAGE,
-            ],
+            exports: [LoggerDefaultOptionsFactory, optionsProvider, pinoOptionsProvider, LoggerService, ...decorated, pinoLoggerProvider],
         };
     }
 
